@@ -30,8 +30,8 @@ func _process(delta):
 func spawn_villain(pos: Vector3):
 	var scene = villain_fat_scene if randi() % 2 == 0 else villain_tall_scene
 	var villain = scene.instantiate()
-	villain.global_position = pos
 	add_child(villain)
+	villain.global_position = pos
 	spawned_count += 1
 
 func get_random_spawn_position() -> Vector3:
