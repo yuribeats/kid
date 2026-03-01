@@ -98,8 +98,6 @@ func handle_movement(delta):
 	if direction:
 		velocity.x = direction.x * current_speed
 		velocity.z = direction.z * current_speed
-		if model:
-			model.rotation.y = atan2(velocity.x, velocity.z)
 	else:
 		velocity.x = move_toward(velocity.x, 0, current_speed * 2)
 		velocity.z = move_toward(velocity.z, 0, current_speed * 2)
