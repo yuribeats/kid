@@ -1,7 +1,6 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://scenes/enemies/villain.gd" id="1"]
-[ext_resource type="PackedScene" path="res://assets/models/villain_fat.glb" id="2"]
 
 [sub_resource type="CapsuleShape3D" id="1"]
 radius = 0.4
@@ -14,5 +13,3 @@ is_fat = true
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0)
 shape = SubResource("1")
-
-[node name="Model" parent="." instance=ExtResource("2")]

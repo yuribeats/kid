@@ -94,12 +94,63 @@ func build_spa():
 		wb.add_child(ws)
 		add_child(wb)
 
-	var friend_model = load("res://assets/models/friend.glb")
-	if friend_model:
-		var friend = friend_model.instantiate()
-		friend.position = Vector3(5, 0, -2)
-		friend.rotation.y = -PI / 2
-		add_child(friend)
+	_build_friend()
+
+func _build_friend():
+	var friend = Node3D.new()
+	friend.name = "Friend"
+	friend.position = Vector3(5, 0, -2)
+	add_child(friend)
+
+	var skin = StandardMaterial3D.new()
+	skin.albedo_color = Color(0.78, 0.58, 0.45)
+	var jeans = StandardMaterial3D.new()
+	jeans.albedo_color = Color(0.18, 0.22, 0.42)
+	var boots_m = StandardMaterial3D.new()
+	boots_m.albedo_color = Color(0.12, 0.08, 0.05)
+
+	var parts = [
+		["sphere", Vector3(0, 1.60, 0), 0.14, skin],
+		["capsule", Vector3(0, 1.22, 0), [0.22, 0.70], skin],
+		["capsule", Vector3(-0.28, 1.25, 0), [0.09, 0.55], skin],
+		["capsule", Vector3(0.28, 1.25, 0), [0.09, 0.55], skin],
+		["sphere", Vector3(-0.28, 0.95, 0), 0.05, skin],
+		["sphere", Vector3(0.28, 0.95, 0), 0.05, skin],
+		["capsule", Vector3(-0.12, 0.50, 0), [0.09, 0.75], jeans],
+		["capsule", Vector3(0.12, 0.50, 0), [0.09, 0.75], jeans],
+		["box", Vector3(-0.12, 0.06, 0.02), Vector3(0.12, 0.14, 0.18), boots_m],
+		["box", Vector3(0.12, 0.06, 0.02), Vector3(0.12, 0.14, 0.18), boots_m],
+	]
+	for p in parts:
+		var inst = MeshInstance3D.new()
+		if p[0] == "sphere":
+			var m = SphereMesh.new()
+			m.radius = p[2]
+			m.height = p[2] * 2.0
+			inst.mesh = m
+		elif p[0] == "capsule":
+			var m = CapsuleMesh.new()
+			m.radius = p[2][0]
+			m.height = p[2][1]
+			inst.mesh = m
+		elif p[0] == "box":
+			var m = BoxMesh.new()
+			m.size = p[2]
+			inst.mesh = m
+		inst.material_override = p[3] if p[0] != "box" else p[3]
+		inst.position = p[1]
+		friend.add_child(inst)
+
+	var face_spr = Sprite3D.new()
+	var tex = load("res://assets/textures/face_friend.png")
+	if tex:
+		face_spr.texture = tex
+	face_spr.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+	face_spr.position = Vector3(0, 1.60, 0)
+	face_spr.pixel_size = 0.005
+	face_spr.alpha_cut = SpriteBase3D.ALPHA_CUT_DISCARD
+	face_spr.alpha_scissor_threshold = 0.5
+	friend.add_child(face_spr)
 
 	var bench_mat = StandardMaterial3D.new()
 	bench_mat.albedo_color = Color(0.4, 0.28, 0.15)
