@@ -12,6 +12,8 @@ var state: State = State.IDLE
 var player: CharacterBody3D = null
 var stun_timer := 0.0
 var gravity := 20.0
+var chase_timer := 0.0
+var max_chase_time := 10.0
 
 func _ready():
 	if is_fat:
@@ -38,6 +40,7 @@ func _physics_process(delta):
 func idle_state():
 	if player and global_position.distance_to(player.global_position) < detection_range:
 		state = State.CHASE
+		chase_timer = 0.0
 
 func chase_state(delta):
 	if not player:
@@ -46,11 +49,18 @@ func chase_state(delta):
 	dir.y = 0
 	var dist = dir.length()
 
+	chase_timer += delta
+	if chase_timer >= max_chase_time:
+		get_dodged()
+		return
+
 	if dist < catch_range:
 		if not player.invincible:
 			player.get_caught()
 			state = State.STUNNED
 			stun_timer = stun_duration
+		else:
+			get_dodged()
 		return
 
 	dir = dir.normalized()
@@ -65,8 +75,8 @@ func stunned_state(delta):
 	stun_timer -= delta
 	if stun_timer <= 0:
 		state = State.CHASE
+		chase_timer = 0.0
 
 func get_dodged():
 	GameManager.dodge_villain()
-	state = State.STUNNED
-	stun_timer = stun_duration
+	queue_free()

@@ -5,10 +5,10 @@
 [ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="3"]
 
 [sub_resource type="BoxShape3D" id="1"]
-size = Vector3(100, 1, 100)
+size = Vector3(200, 1, 200)
 
 [sub_resource type="BoxMesh" id="2"]
-size = Vector3(100, 1, 100)
+size = Vector3(200, 1, 200)
 
 [node name="Street" type="Node3D"]
 script = ExtResource("1")
@@ -26,10 +26,12 @@ shape = SubResource("1")
 
 [node name="FloorMesh" type="MeshInstance3D" parent="Floor"]
 mesh = SubResource("2")
+visibility_layer = 0
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.866, -0.25, 0.433, 0, 0.866, 0.5, -0.5, -0.433, 0.75, 0, 10, 0)
-light_energy = 1.2
+light_energy = 0.8
+light_color = Color(0.9, 0.85, 1, 1)
 shadow_enabled = true
 
 [node name="Buildings" type="Node3D" parent="."]
